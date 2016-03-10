@@ -24,5 +24,8 @@ int main() {
 
     list.print();
 
+	cout << "Give me something to continue";
+	cin >> n;
+
     return 0;
 }

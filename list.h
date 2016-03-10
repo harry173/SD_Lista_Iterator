@@ -7,17 +7,46 @@ using namespace std;
 
 
 template<typename T>
-struct List {
+class List {
 private:
 	T *array;
 	int size; //se va modifica la fiecare remove/add de element!
 	
 	class Iterator {
 	public:
-		T& operator *();
-		T* operator ->();
-		Iterator operator ++();
-		Iterator operator ++(int);
+		const T *element;
+		int index;
+
+		Iterator(T *element, int index) {
+			this->element = element;
+			this->index = index;
+		}
+
+		T& operator *() {
+			return *element;
+		}
+
+		T* operator ->() {
+			return element;
+		}
+
+		//prefix ++
+		Iterator& operator ++() {
+			if (index >= size - 1) {
+				cout << endl << "At end of array";
+				return element;
+			}
+			return Iterator(element++, index+1);
+		}
+
+		//postfix ++
+		Iterator operator ++(int) {
+			if (index >= size - 1) {
+				cout << endl << "At end of array";
+				return element;
+			}
+			return Iterator(element++, index + 1);
+		}
 	};
 	
 public:
@@ -64,8 +93,12 @@ public:
 	void push_back(const T& element);
 	void push_front(const T& element);
 	
-	iterator begin();
-	iterator end();
+	Iterator begin() {
+		return Iterator(&array, 0);
+	}
+	Iterator end() {
+		return Iterator(&array[size - 1], size-1);
+	}
 
 	// Metoda care afiseaza elementele vectorului.
 	void print() {
